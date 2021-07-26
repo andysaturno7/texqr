@@ -1,0 +1,11 @@
+{
+  "directories": {
+    "output": "out",
+    "buildResources": "build"
+  },
+  "win": {
+    "target": "msi",
+    "icon": "./favicon.png"
+  },
+  "asar": false
+}

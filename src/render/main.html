@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electron App</title>
+
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      body {
+        font-family: sans-serif;
+        color: azure;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame-board">
+      <span class="frame-brand" id="ip_address"></span>
+      <div class="frame-controls">
+        <button>-</button>
+        <button>o</button>
+        <button id="equis">x</button>
+      </div>
+    </div>
+
+    <h1 style="color: red">Hello Electron!</h1>
+    Electron Font
+
+    <button id="button">Lanzar Ventana</button>
+    <button id="ipmport_btn" onclick="launch_import()">Import</button>
+
+    <script>
+      const io = require("./socket.io");
+      socket = io("http://localhost:5050");
+      socket.on("welcome", (data) => {
+        alert(data.message);
+      });
+
+      socket.on("new_user", (data) => {
+        alert(JSON.stringify(data));
+      });
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>

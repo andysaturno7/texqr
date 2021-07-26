@@ -1,0 +1,47 @@
+body,
+div,
+button {
+  margin: 0;
+  padding: 0;
+}
+.frame-board {
+  -webkit-app-region: drag;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-family: sans-serif;
+  font-weight: lighter;
+  background-color: #444;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+}
+
+.frame-board button {
+  -webkit-app-region: no-drag;
+  background: none;
+  border-style: none;
+  padding: 3px;
+}
+
+#equis:hover {
+  background-color: red;
+  color: aliceblue;
+  cursor: pointer;
+}
+
+.frame-brand {
+  user-select: none;
+  -webkit-user-select: none;
+  padding: 3px;
+  padding-left: 5px;
+  color: aliceblue;
+}
+
+.frame-controls {
+  padding: 0;
+  margin: 0;
+  background: none;
+  border-style: none;
+  color: brown;
+}

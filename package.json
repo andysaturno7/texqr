@@ -1,0 +1,36 @@
+{
+  "name": "regqr",
+  "version": "1.0.0",
+  "description": "App para practicar electron",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron .",
+    "start:ang": "cd fervi && ng serve -o",
+    "build:ang": "cd fervi && ng build --base-href ./",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "ngyp": "electron-builder start"
+  },
+  "keywords": [
+    "app",
+    "electron",
+    "Qr",
+    "Eventos"
+  ],
+  "author": "Andy Sánchez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
+    "sequelize": "^6.6.2",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.1.2",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "electron": "^11.3.0",
+    "electron-builder": "^22.9.1",
+    "sequelize-cli": "^6.2.0"
+  }
+}
