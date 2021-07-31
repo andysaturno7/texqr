@@ -6,7 +6,7 @@ const fs = require("fs");
 const { sequelize } = require("./db/index");
 const Session = require("./session");
 const System = require("./system");
-const PORT = 5050;
+const PORT = process.env.PORT || 5050;
 
 Error.prototype.code = 500;
 
@@ -16,7 +16,9 @@ const { server, io } = require("./server/index");
 
 async function initApp() {
   // Sincronizar base de datos
-  await sequelize.sync();
+  let dbdir = fs.readdirSync(path.join(__dirname, "db"));
+  if (dbdir.find((val) => val === "database.db") === undefined)
+    await sequelize.sync();
   console.log("Base de Datos sincronizada");
   _room().setDefaultRoom();
   return new Promise((resolve, reject) => {
@@ -92,6 +94,8 @@ ipcMain.on("launch_import", () => {
 });
 
 ipcMain.handle("get_ip", (ev, args) => {
+  let ip = require("./functions")().getIP();
+  console.log(ip);
   return require("./functions")().getIP();
 });
 

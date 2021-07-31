@@ -3,7 +3,7 @@ const { Model, DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   class Asistance extends Model {
     static associate(models) {
-      Asistance.belongsTo(models.Registrant);
+      Asistance.belongsTo(models.Registrant, { onDelete: "CASCADE" });
       Asistance.belongsTo(models.Room);
     }
   }

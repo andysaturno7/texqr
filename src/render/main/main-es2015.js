@@ -1686,9 +1686,7 @@ class ElectronService {
     }
     getIp() {
         return new Promise((resolve) => {
-            this.electron.ipcRenderer
-                .invoke('get_ip')
-                .then((address) => resolve(address[0]));
+            this.electron.ipcRenderer.invoke('get_ip').then(resolve);
         });
     }
     launchImport() {

@@ -39,13 +39,14 @@ module.exports = (io) => {
     getIP() {
       var interfaces = os.networkInterfaces();
       var addresses = [];
+      let objectAdress = {};
       for (var k in interfaces) {
+        let k2Object = {};
         for (var k2 in interfaces[k]) {
-          let address = interfaces[k][k2];
-          if (address.family === "IPv4" && !address.internal) {
-            addresses.push(address.address);
-          }
+          k2Object[interfaces[k][k2].family] = interfaces[k][k2].address;
+          k2Object["type"] = k;
         }
+        addresses.push(k2Object);
       }
       return addresses;
     },

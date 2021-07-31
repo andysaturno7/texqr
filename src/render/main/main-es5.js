@@ -3317,9 +3317,7 @@
             var _this7 = this;
 
             return new Promise(function (resolve) {
-              _this7.electron.ipcRenderer.invoke('get_ip').then(function (address) {
-                return resolve(address[0]);
-              });
+              _this7.electron.ipcRenderer.invoke('get_ip').then(resolve);
             });
           }
         }, {
