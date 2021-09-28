@@ -163,9 +163,11 @@ ipcMain.handle("get_room", async (ev, id) => {
 });
 
 ipcMain.handle("add_room", async (ev, args) => {
-  return await _room().addOne(args).then(res=>{
-    console.log(res);
-  });
+  return await _room()
+    .addOne(args)
+    .then((res) => {
+      console.log(res);
+    });
 });
 
 ipcMain.handle("delete_room", async (ev, id) => {
@@ -186,18 +188,15 @@ ipcMain.handle("get_systems", async (ev, args) => {
 
 io.on("connection", (socket) => {
   // socket.emit("welcome", { message: "Conectado con Sockets IO" });
-  socket.on("connect_client", (args) => {
+  socket.on("connect_client", async (args) => {
     let address = args.address || socket.handshake.address;
     let idx = address.lastIndexOf(":");
     if (~idx && ~address.indexOf(".")) address = address.slice(idx + 1);
     let system = new System(socket.id, address, args);
-    system
-      .setDefaultRoom()
-      .then(() => session.addSystem(system))
-      .then((addedData) => {
-        addedData["type"] = "connect";
-        io.emit("updated_systems", addedData);
-      });
+    await system.setRoom();
+    let addedData = session.addSystem(system);
+    addedData["type"] = "connect";
+    io.emit("updated_systems", addedData);
   });
   socket.on("client_scanned", async (clientCode) => {
     try {

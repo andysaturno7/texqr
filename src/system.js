@@ -6,6 +6,7 @@ class System {
   address;
   name;
   useDefaultRoom;
+  roomId;
   room;
 
   constructor(
@@ -14,25 +15,26 @@ class System {
     options = {
       name: "defaultName",
       useDefaultRoom: true,
+      roomId: null
     }
   ) {
     this.id = options.id || id;
     this.address = options.address || address;
     this.name = options.name || "defaultName";
     this.useDefaultRoom = options.useDefaultRoom || true;
+    if(options.roomId != null){
+      this.roomId = options.roomId;
+    }
   }
 
   verifyRegister(code) {
-    var register;
     return this.getRegistrantByCode(code)
       .then((registrant) => {
-        register = registrant;
-        return registrant.createAsistance({
-          RoomId: this.room.id,
-          joinTime: new Date(),
-        });
-      })
-      .then(() => register);
+          return registrant.createAsistance({
+            RoomId: this.room.id,
+            joinTime: new Date(),
+          }).then(()=>registrant);
+      });
     return new Promise(async (resolve, reject) => {
       let activeRoom, registrants;
       if (this.useDefaultRoom && !this.room.isDefaultRoom) {
@@ -63,16 +65,30 @@ class System {
     });
   }
 
-  setRoom(room) {
-    !!room ? (this.room = room) : this.setDefaultRoom();
+  setRoom(roomId = null) {
+    return new Promise((resolve, reject)=>{
+    if(this.roomId == null || undefined){
+      this.useDefaultRoom = true;
+    }
+    if(this.useDefaultRoom && roomId == null && this.roomId == null){
+      this.setDefaultRoom().then(resolve).catch(reject);
+    }else{
+      let id = roomId == null ? this.roomId : roomId;
+      this.getRoomById(id).then(room=>{
+        this.room = room;
+        resolve(this.room);
+      }).catch(err=> {throw err});
+    }
+    });
   }
 
   setDefaultRoom() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.getDefaultRoom().then((defaultRoom) => {
         this.room = defaultRoom;
+        this.roomId = this.room.id;
         resolve();
-      });
+      }).catch(err=> {throw err});
     });
   }
 
