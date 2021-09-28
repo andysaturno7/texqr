@@ -14,6 +14,12 @@ Error.prototype.code = 500;
 const session = new Session();
 const { server, io } = require("./server/index");
 
+if (process.env.NODE_ENV == "server") {
+  // Logic
+} else {
+  // Logic
+}
+
 async function initApp() {
   // Sincronizar base de datos
   let dbdir = fs.readdirSync(path.join(__dirname, "db"));
@@ -23,10 +29,12 @@ async function initApp() {
   _room().setDefaultRoom();
   return new Promise((resolve, reject) => {
     // Arrancar servidor
-    server.listen(PORT, () => {
-      console.log("Escuchando puerto " + server.address().port);
-      resolve();
-    });
+    server
+      .listen(PORT, () => {})
+      .once("listening", () => {
+        console.log("Escuchando puerto " + server.address().port);
+        resolve();
+      });
   });
 }
 
@@ -103,6 +111,8 @@ ipcMain.handle("get_users", async (eve, args) => {
   return await _user(io).getUsers();
 });
 
+// Registrants Controllers
+
 ipcMain.handle("get_registrants", async (eve, args) => {
   return await _registrant(io).getAll();
 });
@@ -132,6 +142,8 @@ ipcMain.handle("drop_registrants", async (ev, args) => {
   return await _registrant(io).dropTable();
 });
 
+// Asistance Controllers
+
 ipcMain.handle("get_asistance", async (ev, args) => {
   return await _asistance(io).getAll();
 });
@@ -140,13 +152,37 @@ ipcMain.handle("get_asistance_count", async (ev, args) => {
   return await _asistance(io).data();
 });
 
+// Rooms Controllers
+
 ipcMain.handle("get_rooms", async (ev, args) => {
   return await _room().getAll();
 });
 
+ipcMain.handle("get_room", async (ev, id) => {
+  return await _room().getById(id);
+});
+
+ipcMain.handle("add_room", async (ev, args) => {
+  return await _room().addOne(args).then(res=>{
+    console.log(res);
+  });
+});
+
+ipcMain.handle("delete_room", async (ev, id) => {
+  return await _room().remove(id);
+});
+
+ipcMain.handle("update_room", async (ev, args) => {
+  return await _room().update(args);
+});
+
+// Systems Controllers
+
 ipcMain.handle("get_systems", async (ev, args) => {
   return await session.getSystems();
 });
+
+// Socket Controllers
 
 io.on("connection", (socket) => {
   // socket.emit("welcome", { message: "Conectado con Sockets IO" });

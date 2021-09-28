@@ -19,7 +19,8 @@ exports.createWindow = () => {
     },
   });
   // win.setMenuBarVisibility(false);
-  win.setMenu(null);
+  // win.setMenu(null);
+  win.webContents.openDevTools();
 
   win.loadFile(path.join(__dirname, "/render/main/index.html"));
 

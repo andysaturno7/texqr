@@ -16,7 +16,7 @@ const io = new Server(server, {
 // Middlewares
 express.use(cors());
 express.use(json());
-express.use(exp.static(path.join(__dirname, "..", "..", "fervi/dist")));
+express.use(exp.static(path.join(__dirname, "..", "render", "scanner-client")));
 
 express.get("/", (req, res) => {
   res.sendFile("/index.html");
@@ -32,5 +32,6 @@ express.use("/users", userRoutes);
 express.use("/registrants", regisRoutes);
 express.use("/asistance", asistanceRoutes);
 express.use("/rooms", roomsRoutes);
+
 
 module.exports = { server, io };
